@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:weather_forecast/core/error/failure.dart';
-import 'package:weather_forecast/domain/entity/weather.dart';
+import 'package:weather_forecast/domain/entities/weather.dart';
 import 'package:weather_forecast/domain/repositories/weather_repository.dart';
 
 class GetCurrentWeatherUseCase {

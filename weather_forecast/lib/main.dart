@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'injection_container.dart';
 
 void main() {
+  setupLocator();
   runApp(const MainApp());
 }
 
