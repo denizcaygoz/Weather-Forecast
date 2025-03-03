@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:weather_forecast/presentation/pages/main_page.dart';
 import 'injection_container.dart';
-import 'presentation/pages/first_page.dart';
+//import 'presentation/pages/first_page.dart';
 
 void main() {
   setupLocator();
+
   runApp(const MainApp());
 }
 
@@ -15,7 +17,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
-      home: const FirstPage(),
+      home: const MainPage(),
     );
   }
 }

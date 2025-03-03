@@ -16,6 +16,8 @@ class WeatherModel extends WeatherEntity {
     required double windGust,
     required int humidity,
     required double feelsLike,
+    required String main,
+    required String description,
   }) : super(
           currentTemp: currentTemp,
           weatherIcon: weatherIcon,
@@ -31,6 +33,8 @@ class WeatherModel extends WeatherEntity {
           windGust: windGust,
           humidity: humidity,
           feelsLike: feelsLike,
+          main: main,
+          description: description,
         );
 
   factory WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -59,6 +63,8 @@ class WeatherModel extends WeatherEntity {
       windGust: firstWeather['wind']['gust']?.toDouble() ?? 0.0,
       humidity: firstWeather['main']['humidity'],
       feelsLike: _kelvinToCelsius(firstWeather['main']['feels_like']),
+      main: firstWeather['weather'][0]['main'],
+      description: firstWeather['weather'][0]['description'],
     );
   }
 
@@ -124,6 +130,8 @@ class WeatherModel extends WeatherEntity {
         windGust: windGust,
         humidity: humidity,
         feelsLike: feelsLike,
+        main: main,
+        description: description,
       );
 
   Map<String, dynamic> toJson() => {

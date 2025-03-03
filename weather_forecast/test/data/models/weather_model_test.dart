@@ -39,6 +39,8 @@ void main() {
     windGust: 1.18,
     humidity: 69,
     feelsLike: 23.83, // 296.98K - 273.15
+    main: 'Rain',
+    description: 'light rain',
   );
 
   group('WeatherModel', () {

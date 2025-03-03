@@ -15,6 +15,8 @@ class WeatherEntity extends Equatable {
   final double windGust;
   final int humidity;
   final double feelsLike;
+  final String main;
+  final String description;
 
   const WeatherEntity({
     required this.currentTemp,
@@ -31,6 +33,8 @@ class WeatherEntity extends Equatable {
     required this.windGust,
     required this.humidity,
     required this.feelsLike,
+    required this.main,
+    required this.description,
   });
 
   @override
@@ -49,6 +53,8 @@ class WeatherEntity extends Equatable {
         windGust,
         humidity,
         feelsLike,
+        main,
+        description,
       ];
 }
 
