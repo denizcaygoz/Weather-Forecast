@@ -1,23 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:weather_forecast/presentation/pages/main_page.dart';
-import 'package:weather_forecast/presentation/pages/side_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_forecast/presentation/pages/first_page.dart';
+import 'package:weather_forecast/presentation/bloc/weather_bloc.dart';
 import 'injection_container.dart';
 //import 'presentation/pages/first_page.dart';
 
 void main() {
   setupLocator();
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(fontFamily: 'Poppins'),
-      home: const SidePage(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => locator<WeatherBloc>(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Weather Forecast',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(fontFamily: 'Poppins'),
+        home: const FirstPage(),
+      ),
     );
   }
 }

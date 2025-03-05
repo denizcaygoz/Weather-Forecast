@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_forecast/domain/entities/weather.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_forecast/presentation/bloc/weather_bloc.dart';
+import 'package:weather_forecast/presentation/bloc/weather_state.dart';
+import 'package:weather_forecast/presentation/pages/side_page.dart';
+import 'package:weather_forecast/presentation/pages/first_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -10,271 +15,141 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 0;
-  late WeatherEntity weatherEntity;
-
-  @override
-  void initState() {
-    super.initState();
-    weatherEntity = WeatherEntity(
-      currentTemp: 19.0,
-      weatherIcon: 'lib/assets/images/weather_icon.png',
-      tempMax: 24.0,
-      tempMin: 18.0,
-      hourlyForecasts: [
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            0, // 00:00
-          ),
-          temp: 19.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            3, // 03:00
-          ),
-          temp: 18.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            6, // 06:00
-          ),
-          temp: 17.5,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            9, // 09:00
-          ),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            12, // 12:00
-          ),
-          temp: 22.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            15, // 15:00
-          ),
-          temp: 23.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            18, // 18:00
-          ),
-          temp: 21.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-        HourlyForecast(
-          time: DateTime(
-            DateTime.now().year,
-            DateTime.now().month,
-            DateTime.now().day,
-            21, // 21:00
-          ),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-        ),
-      ],
-      dailyForecasts: [
-        DailyForecast(
-          date: DateTime.now(),
-          temp: 19.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-          dayOfWeek: 'Mon',
-        ),
-        DailyForecast(
-          date: DateTime.now().add(const Duration(days: 1)),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-          dayOfWeek: 'Tue',
-        ),
-        DailyForecast(
-          date: DateTime.now().add(const Duration(days: 1)),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-          dayOfWeek: 'Wed',
-        ),
-        DailyForecast(
-          date: DateTime.now().add(const Duration(days: 1)),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-          dayOfWeek: 'Thr',
-        ),
-        DailyForecast(
-          date: DateTime.now().add(const Duration(days: 1)),
-          temp: 20.0,
-          weatherIcon: 'lib/assets/images/weather_icon.png',
-          dayOfWeek: 'Fri',
-        ),
-      ],
-      cityName: 'London',
-      sunrise: DateTime.now(),
-      sunset: DateTime.now().add(const Duration(hours: 12)),
-      windSpeed: 5.0,
-      windDegree: 180,
-      windGust: 8.0,
-      humidity: 75,
-      feelsLike: 18.5,
-      main: 'Cloudy',
-      description: 'Partly cloudy',
-    );
-  }
+  int _selectedIndex = 1;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          width: double.infinity, // Ensures the container takes full width
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF2B2B54), // Dark blue/purple
-                Color(0xFF6B2B8C), // Purple
+    return BlocBuilder<WeatherBloc, WeatherState>(
+      builder: (context, state) {
+        if (state is! WeatherLoaded) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final weather = state.result;
+
+        return Scaffold(
+          body: Container(
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color(0xFF2B2B54),
+                  Color(0xFF6B2B8C),
+                ],
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                currentWeather(weather),
+                const SizedBox(height: 46),
+                houseImage(),
+                Expanded(
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      border: Border.all(color: Colors.black, width: 2),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 19, left: 55, bottom: 12),
+                              child: Text(
+                                "Today",
+                                style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.47,
+                                    fontFamily: 'OpenSans'),
+                              ),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: 19, right: 40, bottom: 12),
+                              child: Text(
+                                DateFormat('MMMM d').format(DateTime.now()),
+                                style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.47,
+                                    fontFamily: 'OpenSans'),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          width: double.infinity,
+                          height: 2,
+                          color: Color(0xFF8E78C8),
+                        ),
+                        const SizedBox(height: 29),
+                        Container(
+                          height: 150,
+                          alignment: Alignment.center,
+                          child: ListView.separated(
+                            itemCount: weather.hourlyForecasts.length,
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(horizontal: 24),
+                            separatorBuilder: (context, index) =>
+                                SizedBox(width: 18),
+                            itemBuilder: (context, index) {
+                              final hourly = weather.hourlyForecasts[index];
+                              return Column(
+                                children: [
+                                  Text(
+                                    "${hourly.temp.round()}°",
+                                    style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.47,
+                                        fontFamily: 'Poppins'),
+                                  ),
+                                  Image.network(
+                                    hourly.weatherIcon,
+                                    height: 66,
+                                    width: 66,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder:
+                                        (context, child, loadingProgress) {
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                          child: CircularProgressIndicator());
+                                    },
+                                  ),
+                                  Text(
+                                    DateFormat('HH:mm').format(hourly.time),
+                                    style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.47,
+                                        fontFamily: 'Poppins'),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              currentWeather(),
-              const SizedBox(
-              height: 46,
-            ),
-            houseImage(),
-            Expanded(
-              // Ensures it takes all available space
-                child: Container(
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle,
-                    border: Border.all(color: Colors.black, width: 2),
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: Column(
-                    children: [
-                      Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 19, left: 55, bottom: 12),
-                            child: Text(
-                              "Today",
-                              style: TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.47,
-                                  fontFamily: 'OpenSans'),
-                            ),
-                          ),
-                          Spacer(),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                top: 19, right: 40, bottom: 12),
-                            child: Text(
-                              "July 21",
-                              style: TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.47,
-                                  fontFamily: 'OpenSans'),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        width: double.infinity,
-                        height: 2,
-                        color: Color(0xFF8E78C8),
-                      ),
-                    const SizedBox(height: 29),
-                      Container(
-                      height: 150,
-                      alignment: Alignment
-                          .center, // Ensures centering within the container
-                        child: ListView.separated(
-                          itemCount: weatherEntity.hourlyForecasts.length,
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.symmetric(horizontal: 24),
-                          separatorBuilder: (context, index) =>
-                              SizedBox(width: 18),
-                          itemBuilder: (context, index) {
-                            return Column(
-                              children: [
-                                Text(
-                                  weatherEntity.hourlyForecasts[index].temp
-                                      .toString(),
-                                  style: TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                    fontWeight: FontWeight.w500, //medium
-                                    letterSpacing:
-                                        0.47, //add space between letters
-                                      fontFamily: 'Poppins'),
-                                ),
-                                Image.asset(
-                                  weatherEntity
-                                      .hourlyForecasts[index].weatherIcon,
-                                  height: 66, 
-                                  width: 66,
-                                  fit: BoxFit.cover,
-                                ),
-                                Text(
-                                  DateFormat('HH:mm').format(
-                                      weatherEntity.hourlyForecasts[index].time),
-                                  style: TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0.47,
-                                      fontFamily: 'Poppins'),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                    )
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20), // Added bottom padding
-            ],
-          ),
-        ),
-      ),
-      bottomNavigationBar: bottomNavigationBar(),
+          bottomNavigationBar: bottomNavigationBar(),
+        );
+      },
     );
   }
 
@@ -287,46 +162,56 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Column currentWeather() {
+  Column currentWeather(WeatherEntity weather) {
     return Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-      Image.asset(
-        'lib/assets/images/weather_icon.png', // Local image
+      Image.network(
+        weather.weatherIcon,
         height: 244,
         width: 244,
         fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          if (loadingProgress == null) return child;
+          return const Center(child: CircularProgressIndicator());
+        },
       ),
-      Text("19°",
+      Text("${weather.currentTemp.round()}°",
           style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 64,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.47,
-              fontFamily: 'Poppins')),
-      Text("Precipitations",
-          style: TextStyle(
-              color: Color(0xFFFFFFFF),
-              fontSize: 24,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 0.47,
-              fontFamily: 'Poppins')),
+              fontFamily: 'Poppins')), //currentTemp from api
+      Text(
+        "Precipitations",
+        style: TextStyle(
+          color: Color(0xFFFFFFFF),
+          fontSize: 24,
+          fontWeight: FontWeight.w500,
+          letterSpacing: 0.47,
+          fontFamily: 'Poppins',
+        ),
+      ),
       Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text("Max: 24°",
-              style: TextStyle(
-                  color: Color(0xFFFFFFFF),
-                  fontSize: 24,
-                  fontWeight: FontWeight.w400,
-                  letterSpacing: 0.47,
-                  fontFamily: 'Poppins')),
+          Text(
+            "Max: ${weather.tempMax.round()}°",
+            style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 24,
+              fontWeight: FontWeight.w400,
+              letterSpacing: 0.47,
+              fontFamily: 'Poppins',
+            ),
+          ),
           const SizedBox(width: 20),
-          Text("Min: 18°",
+          Text("Min: ${weather.tempMin.round()}°",
               style: TextStyle(
                   color: Color(0xFFFFFFFF),
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
                   letterSpacing: 0.47,
-                  fontFamily: 'Poppins')),
+                  fontFamily: 'Poppins')), //tempMin from api
         ],
       )
     ]);
@@ -337,22 +222,36 @@ class _MainPageState extends State<MainPage> {
       onTap: (index) {
         setState(() {
           _selectedIndex = index;
+          if (index == 0) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const FirstPage()),
+            );
+          } else if (index == 2) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const SidePage()),
+            );
+          }
         });
       },
       currentIndex: _selectedIndex,
-      items: <BottomNavigationBarItem>[
+      items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Map',
-            backgroundColor: Color(0xFFFFFFFF)),
+          icon: Icon(Icons.search),
+          label: 'Search',
+          backgroundColor: Color(0xFFFFFFFF),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Search',
-            backgroundColor: Color(0xFFFFFFFF)),
+          icon: Icon(Icons.cloud),
+          label: 'Weather',
+          backgroundColor: Color(0xFFFFFFFF),
+        ),
         BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'Menu',
-            backgroundColor: Color(0xFFFFFFFF)),
+          icon: Icon(Icons.menu),
+          label: 'More',
+          backgroundColor: Color(0xFFFFFFFF),
+        ),
       ],
     );
   }

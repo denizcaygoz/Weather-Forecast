@@ -43,7 +43,8 @@ class WeatherModel extends WeatherEntity {
 
     return WeatherModel(
       currentTemp: _kelvinToCelsius(firstWeather['main']['temp']),
-      weatherIcon: firstWeather['weather'][0]['icon'],
+      weatherIcon:
+          'http://openweathermap.org/img/wn/${firstWeather['weather'][0]['icon']}@2x.png',
       tempMax: _kelvinToCelsius(firstWeather['main']['temp_max']),
       tempMin: _kelvinToCelsius(firstWeather['main']['temp_min']),
       hourlyForecasts: (json['list'] as List)
@@ -51,7 +52,8 @@ class WeatherModel extends WeatherEntity {
           .map((item) => HourlyForecast(
                 time: DateTime.parse(item['dt_txt']),
                 temp: _kelvinToCelsius(item['main']['temp']),
-                weatherIcon: item['weather'][0]['icon'],
+                weatherIcon:
+                    'http://openweathermap.org/img/wn/${item['weather'][0]['icon']}@2x.png',
               ))
           .toList(),
       dailyForecasts: _createDailyForecasts(json['list'] as List),
@@ -85,7 +87,8 @@ class WeatherModel extends WeatherEntity {
         dailyForecasts.add(DailyForecast(
           date: date,
           temp: _kelvinToCelsius(item['main']['temp']),
-          weatherIcon: item['weather'][0]['icon'],
+          weatherIcon:
+              'http://openweathermap.org/img/wn/${item['weather'][0]['icon']}@2x.png',
           dayOfWeek: _getDayOfWeek(date.weekday),
         ));
       }
