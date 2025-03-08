@@ -32,5 +32,6 @@ flutter:
     - lib/assets/images/weather_icon.png
     - lib/assets/images/weather_forecasts_text.png
     - lib/assets/images/house.jpg
+    - lib/assets/images/background.png
     
  

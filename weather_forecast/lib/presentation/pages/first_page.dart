@@ -36,16 +36,13 @@ class _FirstPageState extends State<FirstPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: double.infinity,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2B2B54), // Dark blue/purple
-              Color(0xFF6B2B8C), // Purple
-            ],
-          ),
+          image: DecorationImage(
+              image: AssetImage("lib/assets/images/background.png"),
+              fit: BoxFit.cover // Centers the image
+              ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
