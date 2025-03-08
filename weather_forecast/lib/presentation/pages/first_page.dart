@@ -15,6 +15,7 @@ class FirstPage extends StatefulWidget {
 
 class _FirstPageState extends State<FirstPage> {
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -29,182 +30,191 @@ class _FirstPageState extends State<FirstPage> {
   @override
   void dispose() {
     _searchController.dispose();
+    _pageController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-            image: AssetImage("lib/assets/images/background.png"),
-            fit: BoxFit.cover),
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent, // Makes Scaffold background clear
-        extendBody: true, // Extends body beneath the BottomNavigationBar
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image.asset(
-              'lib/assets/images/weather_icon.png',
-              height: 428,
-              width: 428,
-              fit: BoxFit.cover,
-            ),
-            const SizedBox(height: 51),
-            Image.asset(
-              'lib/assets/images/weather_forecasts_text.png',
-              height: 154,
-              width: 428,
-            ),
-            const SizedBox(height: 53),
-            BlocListener<WeatherBloc, WeatherState>(
-              listener: (context, state) {
-                if (state is WeatherLoaded &&
-                    _searchController.text.isNotEmpty) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const MainPage(),
-                    ),
-                  );
-                }
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  width: 304,
-                  height: 72,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFDDB130),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: BlocBuilder<WeatherBloc, WeatherState>(
-                    builder: (context, state) {
-                      return TextField(
-                        controller: _searchController,
-                        style: const TextStyle(
-                          color: Color(0xFF362A84),
-                          fontSize: 28,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 0.47,
-                          fontFamily: 'OpenSans',
-                        ),
-                        decoration: InputDecoration(
-                          hintText: 'Search a city',
-                          hintStyle: TextStyle(
-                            color: Color(0xFF362A84).withValues(),
-                            fontSize: 28,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.47,
-                            fontFamily: 'OpenSans',
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: Color(0xFF362A84),
-                            size: 30,
-                          ),
-                          suffixIcon: state is WeatherLoading
-                              ? Container(
-                                  padding: EdgeInsets.all(10),
-                                  height: 10,
-                                  width: 10,
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xFF362A84),
-                                  ),
-                                )
-                              : null,
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 20),
-                        ),
-                        textAlign: TextAlign.start,
-                        onChanged: (query) {
-                          if (query.isNotEmpty) {
-                            context
-                                .read<WeatherBloc>()
-                                .add(OnCityChanged(query));
-                          }
-                        },
-                        onSubmitted: (query) {
-                          if (query.isNotEmpty) {
-                            context
-                                .read<WeatherBloc>()
-                                .add(OnCityChanged(query));
-                          }
-                        },
-                      );
-                    },
-                  ),
-                ),
+    return Scaffold(
+      extendBody: true, // Extends content beneath the BottomNavigationBar
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // Background Image
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage("lib/assets/images/background.png"),
+                fit: BoxFit.cover,
               ),
             ),
-            BlocBuilder<WeatherBloc, WeatherState>(
-              builder: (context, state) {
-                if (state is WeatherLoadFailue) {
-                  return Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      state.message,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 16,
-                      ),
-                    ),
-                  );
-                }
-                return SizedBox.shrink();
-              },
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.transparent, //Transparent background
-          elevation: 0, //Removes shadow effect
-          selectedItemColor: Colors.white, //Makes selected label white
-          unselectedItemColor: Colors.white
-              .withValues(), //Makes unselected label semi-transparent
-          selectedLabelStyle:
-              TextStyle(color: Colors.white), //Makes selected label white
-          unselectedLabelStyle: TextStyle(
-              color: Colors.white
-                  .withValues()), //Makes unselected label semi-transparent
-          onTap: (index) {
-            setState(() {
-              _selectedIndex = index;
-              if (index == 1) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const MainPage()),
-                );
-              } else if (index == 2) {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const SidePage()),
-                );
-              }
-            });
-          },
-          currentIndex: _selectedIndex,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.cloud),
-              label: 'Weather',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu),
-              label: 'More',
-            ),
-          ],
-        ),
+          ),
+
+          // PageView for Smooth Transitions
+          PageView(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            children: [
+              // First Page Content
+              _buildFirstPageContent(),
+
+              // Main Page (Weather Details)
+              const MainPage(),
+
+              // Side Page (More Options)
+              const SidePage(),
+            ],
+          ),
+        ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.transparent, // Transparent background
+        elevation: 0, // No shadow effect
+        selectedItemColor: Colors.white, // White selected labels
+        unselectedItemColor:
+            Colors.white.withOpacity(0.7), // Semi-transparent unselected labels
+        selectedLabelStyle: const TextStyle(color: Colors.white),
+        unselectedLabelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          _pageController.animateToPage(
+            index,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.cloud),
+            label: 'Weather',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.menu),
+            label: 'More',
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// First Page UI Content
+  Widget _buildFirstPageContent() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Image.asset(
+          'lib/assets/images/weather_icon.png',
+          height: 428,
+          width: 428,
+          fit: BoxFit.cover,
+        ),
+        const SizedBox(height: 51),
+        Image.asset(
+          'lib/assets/images/weather_forecasts_text.png',
+          height: 154,
+          width: 428,
+        ),
+        const SizedBox(height: 53),
+        BlocListener<WeatherBloc, WeatherState>(
+          listener: (context, state) {
+            if (state is WeatherLoaded && _searchController.text.isNotEmpty) {
+              _pageController.jumpToPage(1); // Navigate to the Weather page
+            }
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Container(
+              width: 304,
+              height: 72,
+              decoration: BoxDecoration(
+                color: const Color(0xFFDDB130),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: BlocBuilder<WeatherBloc, WeatherState>(
+                builder: (context, state) {
+                  return TextField(
+                    controller: _searchController,
+                    style: const TextStyle(
+                      color: Color(0xFF362A84),
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.47,
+                      fontFamily: 'OpenSans',
+                    ),
+                    decoration: InputDecoration(
+                      hintText: 'Search a city',
+                      hintStyle: TextStyle(
+                        color: const Color(0xFF362A84).withOpacity(0.7),
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 0.47,
+                        fontFamily: 'OpenSans',
+                      ),
+                      prefixIcon: const Icon(
+                        Icons.search,
+                        color: Color(0xFF362A84),
+                        size: 30,
+                      ),
+                      suffixIcon: state is WeatherLoading
+                          ? Container(
+                              padding: const EdgeInsets.all(10),
+                              height: 10,
+                              width: 10,
+                              child: const CircularProgressIndicator(
+                                color: Color(0xFF362A84),
+                              ),
+                            )
+                          : null,
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 20),
+                    ),
+                    textAlign: TextAlign.start,
+                    onChanged: (query) {
+                      if (query.isNotEmpty) {
+                        context.read<WeatherBloc>().add(OnCityChanged(query));
+                      }
+                    },
+                    onSubmitted: (query) {
+                      if (query.isNotEmpty) {
+                        context.read<WeatherBloc>().add(OnCityChanged(query));
+                      }
+                    },
+                  );
+                },
+              ),
+            ),
+          ),
+        ),
+        BlocBuilder<WeatherBloc, WeatherState>(
+          builder: (context, state) {
+            if (state is WeatherLoadFailue) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  state.message,
+                  style: const TextStyle(
+                    color: Colors.red,
+                    fontSize: 16,
+                  ),
+                ),
+              );
+            }
+            return const SizedBox.shrink();
+          },
+        ),
+      ],
     );
   }
 }
