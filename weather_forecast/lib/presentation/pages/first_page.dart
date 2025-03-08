@@ -34,17 +34,18 @@ class _FirstPageState extends State<FirstPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("lib/assets/images/background.png"),
-              fit: BoxFit.cover // Centers the image
-              ),
-        ),
-        child: Column(
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("lib/assets/images/background.png"),
+            fit: BoxFit.cover),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent, // Makes Scaffold background clear
+        extendBody: true, // Extends body beneath the BottomNavigationBar
+        body: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Image.asset(
@@ -95,7 +96,7 @@ class _FirstPageState extends State<FirstPage> {
                         decoration: InputDecoration(
                           hintText: 'Search a city',
                           hintStyle: TextStyle(
-                            color: Color(0xFF362A84).withOpacity(0.7),
+                            color: Color(0xFF362A84).withValues(),
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.47,
@@ -160,42 +161,49 @@ class _FirstPageState extends State<FirstPage> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-            if (index == 1) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const MainPage()),
-              );
-            } else if (index == 2) {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const SidePage()),
-              );
-            }
-          });
-        },
-        currentIndex: _selectedIndex,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-            backgroundColor: Color(0xFFFFFFFF),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.cloud),
-            label: 'Weather',
-            backgroundColor: Color(0xFFFFFFFF),
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.menu),
-            label: 'More',
-            backgroundColor: Color(0xFFFFFFFF),
-          ),
-        ],
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.transparent, //Transparent background
+          elevation: 0, //Removes shadow effect
+          selectedItemColor: Colors.white, //Makes selected label white
+          unselectedItemColor: Colors.white
+              .withValues(), //Makes unselected label semi-transparent
+          selectedLabelStyle:
+              TextStyle(color: Colors.white), //Makes selected label white
+          unselectedLabelStyle: TextStyle(
+              color: Colors.white
+                  .withValues()), //Makes unselected label semi-transparent
+          onTap: (index) {
+            setState(() {
+              _selectedIndex = index;
+              if (index == 1) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const MainPage()),
+                );
+              } else if (index == 2) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SidePage()),
+                );
+              }
+            });
+          },
+          currentIndex: _selectedIndex,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.search),
+              label: 'Search',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.cloud),
+              label: 'Weather',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: 'More',
+            ),
+          ],
+        ),
       ),
     );
   }
