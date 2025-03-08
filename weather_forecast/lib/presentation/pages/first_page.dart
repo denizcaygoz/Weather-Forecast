@@ -156,7 +156,7 @@ class _FirstPageState extends State<FirstPage> {
                       hintText: 'Search a city',
                       hintStyle: TextStyle(
                         color: const Color(0xFF362A84).withOpacity(0.7),
-                        fontSize: 28,
+                        fontSize: 26,
                         fontWeight: FontWeight.bold,
                         letterSpacing: 0.47,
                         fontFamily: 'OpenSans',
