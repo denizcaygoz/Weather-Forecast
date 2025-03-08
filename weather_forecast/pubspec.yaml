@@ -33,5 +33,22 @@ flutter:
     - lib/assets/images/weather_forecasts_text.png
     - lib/assets/images/house.jpg
     - lib/assets/images/background.png
+
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: lib/assets/fonts/Poppins-Regular.ttf
+        - asset: lib/assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: lib/assets/fonts/Poppins-Italic.ttf
+          style: italic
+
+    - family: OpenSans
+      fonts:
+        - asset: lib/assets/fonts/OpenSans-Regular.ttf
+        - asset: lib/assets/fonts/OpenSans-Bold.ttf
+          weight: 700
+        - asset: lib/assets/fonts/OpenSans-Italic.ttf
+          style: italic
     
  
