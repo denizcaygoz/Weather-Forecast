@@ -148,7 +148,7 @@ class _FirstPageState extends State<FirstPage> {
                     style: const TextStyle(
                       color: Color(0xFF362A84),
                       fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w700,
                       letterSpacing: 0.47,
                       fontFamily: 'OpenSans',
                     ),
@@ -157,7 +157,7 @@ class _FirstPageState extends State<FirstPage> {
                       hintStyle: TextStyle(
                         color: const Color(0xFF362A84).withOpacity(0.7),
                         fontSize: 26,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                         letterSpacing: 0.47,
                         fontFamily: 'OpenSans',
                       ),

@@ -38,16 +38,22 @@ flutter:
     - family: Poppins
       fonts:
         - asset: lib/assets/fonts/Poppins-Regular.ttf
+          weight: 400
         - asset: lib/assets/fonts/Poppins-Bold.ttf
           weight: 700
+        - asset: lib/assets/fonts/Poppins-Medium.ttf
+          weight: 500
         - asset: lib/assets/fonts/Poppins-Italic.ttf
           style: italic
 
     - family: OpenSans
       fonts:
         - asset: lib/assets/fonts/OpenSans-Regular.ttf
+          weight: 400
         - asset: lib/assets/fonts/OpenSans-Bold.ttf
           weight: 700
+        - asset: lib/assets/fonts/OpenSans-Medium.ttf
+          weight: 500
         - asset: lib/assets/fonts/OpenSans-Italic.ttf
           style: italic
     
