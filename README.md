@@ -2,9 +2,9 @@
 A Weather Forecast App made with Flutter.
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/eea349b8-e7c1-419a-aa36-66727acaeebf" width="20%" height="20%">
-  <img src="https://github.com/user-attachments/assets/7fba50f0-de60-47bc-af4f-ce1505e93b6a" width="20%" height="20%">
-  <img src="https://github.com/user-attachments/assets/cf47a268-117f-43e6-a96a-1d13bf8f1675" width="20%" height="20%">
+  <img src="https://github.com/user-attachments/assets/eea349b8-e7c1-419a-aa36-66727acaeebf" width="30%" height="30%">
+  <img src="https://github.com/user-attachments/assets/7fba50f0-de60-47bc-af4f-ce1505e93b6a" width="30%" height="30%">
+  <img src="https://github.com/user-attachments/assets/cf47a268-117f-43e6-a96a-1d13bf8f1675" width="30%" height="30%">
 </p>
 
 The design belongs to the following Figma project:  
