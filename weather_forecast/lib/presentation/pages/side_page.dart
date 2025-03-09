@@ -4,8 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:weather_forecast/domain/entities/weather.dart';
 import 'package:weather_forecast/presentation/bloc/weather_bloc.dart';
 import 'package:weather_forecast/presentation/bloc/weather_state.dart';
-import 'package:weather_forecast/presentation/pages/first_page.dart';
-import 'package:weather_forecast/presentation/pages/main_page.dart';
 
 class SidePage extends StatefulWidget {
   const SidePage({super.key});
@@ -16,7 +14,6 @@ class SidePage extends StatefulWidget {
 
 class SidePageState extends State<SidePage> {
   final ScrollController _scrollController = ScrollController();
-  int _selectedIndex = 2;
 
   @override
   void dispose() {
@@ -50,15 +47,15 @@ class SidePageState extends State<SidePage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 100),
                   cityAndMaxMinTemps(weather),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 50),
                   fiveDaysForecastsTextAndList(weather),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
                   airInfos(weather),
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 30, left: 40, right: 40),
+                        const EdgeInsets.only(top: 20, left: 40, right: 40),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -79,8 +76,8 @@ class SidePageState extends State<SidePage> {
 
   Container todayWeather(WeatherEntity weather) {
     return Container(
-      width: 161,
-      height: 150,
+      width: 171,
+      height: 161,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
@@ -91,18 +88,17 @@ class SidePageState extends State<SidePage> {
           ],
         ),
         shape: BoxShape.rectangle,
-        border: Border.all(color: Colors.black, width: 2),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Padding(
-            padding:
-                const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 10),
+            padding: const EdgeInsets.only(left: 10.0),
             child: Row(
               children: [
                 Icon(Icons.cloud, color: Color(0xFFFFFFFF), size: 18),
+                const SizedBox(width: 5),
                 Text(
                   "Today",
                   style: TextStyle(
@@ -153,8 +149,8 @@ class SidePageState extends State<SidePage> {
 
   Container sunriseAndSunset(WeatherEntity weather) {
     return Container(
-      width: 161,
-      height: 150,
+      width: 171,
+      height: 161,
       decoration: BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.bottomLeft,
@@ -165,7 +161,6 @@ class SidePageState extends State<SidePage> {
           ],
         ),
         shape: BoxShape.rectangle,
-        border: Border.all(color: Colors.black, width: 2),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Column(
@@ -331,7 +326,7 @@ class SidePageState extends State<SidePage> {
           weather.cityName,
           style: TextStyle(
             color: Color(0xFFFFFFFF),
-            fontSize: 24,
+            fontSize: 30,
             fontWeight: FontWeight.w500,
             letterSpacing: 0.47,
             fontFamily: 'Poppins',
@@ -397,8 +392,8 @@ class SidePageState extends State<SidePage> {
     return Padding(
       padding: const EdgeInsets.only(top: 35, left: 35, right: 35, bottom: 44),
       child: Container(
-        width: 352,
-        height: 174,
+        width: 362,
+        height: 184,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.bottomLeft,
@@ -409,7 +404,6 @@ class SidePageState extends State<SidePage> {
             ],
           ),
           shape: BoxShape.rectangle,
-          border: Border.all(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(30),
         ),
         child: Column(
@@ -434,7 +428,7 @@ class SidePageState extends State<SidePage> {
             "Air",
             style: TextStyle(
               color: Color(0xFFFFFFFF),
-              fontSize: 16,
+              fontSize: 24,
               fontWeight: FontWeight.w400,
               letterSpacing: 0.47,
               fontFamily: 'Open Sans',
@@ -502,7 +496,7 @@ class SidePageState extends State<SidePage> {
                 ),
               ),
               Text(
-                "Feels like: ${weather.feelsLike}°",
+                "Feels like: ${weather.feelsLike.round()}°",
                 style: TextStyle(
                   color: Color(0xFFFFFFFF),
                   fontSize: 18,
