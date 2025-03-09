@@ -29,15 +29,12 @@ class _MainPageState extends State<MainPage> {
 
         return Scaffold(
           body: Container(
-            width: double.infinity,
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Color(0xFF2B2B54),
-                  Color(0xFF6B2B8C),
-                ],
+              image: DecorationImage(
+                image: AssetImage("lib/assets/images/background.png"),
+                fit: BoxFit.cover,
               ),
             ),
             child: Column(
@@ -155,7 +152,7 @@ class _MainPageState extends State<MainPage> {
 
   Image houseImage() {
     return Image.asset(
-      'lib/assets/images/house.jpg', // Local image
+      'lib/assets/images/house.png', // Local image
       height: 198,
       width: 336,
       fit: BoxFit.cover,
