@@ -152,7 +152,7 @@ class _MainPageState extends State<MainPage> {
 
   Image houseImage() {
     return Image.asset(
-      'lib/assets/images/house.png', // Local image
+      'lib/assets/images/house.jpg', // Local image
       height: 198,
       width: 336,
       fit: BoxFit.cover,
@@ -171,15 +171,22 @@ class _MainPageState extends State<MainPage> {
           return const Center(child: CircularProgressIndicator());
         },
       ),
-      Text("${weather.currentTemp.round()}°",
+      Text(weather.cityName,
           style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 64,
               fontWeight: FontWeight.w500,
               letterSpacing: 0.47,
+              fontFamily: 'Poppins')),
+      Text("${weather.currentTemp.round()}°",
+          style: TextStyle(
+              color: Color(0xFFFFFFFF),
+              fontSize: 48,
+              fontWeight: FontWeight.w500,
+              letterSpacing: 0.47,
               fontFamily: 'Poppins')), //currentTemp from api
       Text(
-        "Precipitations",
+        weather.description,
         style: TextStyle(
           color: Color(0xFFFFFFFF),
           fontSize: 24,
