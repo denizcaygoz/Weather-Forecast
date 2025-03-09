@@ -4,8 +4,6 @@ import 'package:weather_forecast/domain/entities/weather.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_forecast/presentation/bloc/weather_bloc.dart';
 import 'package:weather_forecast/presentation/bloc/weather_state.dart';
-import 'package:weather_forecast/presentation/pages/side_page.dart';
-import 'package:weather_forecast/presentation/pages/first_page.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -15,8 +13,6 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  int _selectedIndex = 1;
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(
@@ -46,8 +42,17 @@ class _MainPageState extends State<MainPage> {
                 Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
-                    border: Border.all(color: Colors.black, width: 2),
                     borderRadius: BorderRadius.circular(30),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.topRight,
+                      colors: [
+                        Color(0xFF9D52AC).withValues(alpha: 0.7),
+                        Color(0xFF6B3E9D).withValues(alpha: 0.86),
+                        Color(0xFF3E2D8F).withValues(alpha: 1),
+                      ],
+                      stops: [0.0, 0.47, 1.0],
+                    ),
                   ),
                   child: Column(
                     children: [
@@ -55,7 +60,7 @@ class _MainPageState extends State<MainPage> {
                         children: [
                           Padding(
                             padding: const EdgeInsets.only(
-                                top: 19, left: 55, bottom: 12),
+                                top: 19, left: 40, bottom: 12),
                             child: Text(
                               "Today",
                               style: const TextStyle(

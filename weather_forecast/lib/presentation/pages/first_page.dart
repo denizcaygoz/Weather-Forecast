@@ -78,10 +78,11 @@ class _FirstPageState extends State<FirstPage> {
         backgroundColor: Colors.transparent, // Transparent background
         elevation: 0, // No shadow effect
         selectedItemColor: Colors.white, // White selected labels
-        unselectedItemColor:
-            Colors.white.withOpacity(0.7), // Semi-transparent unselected labels
+        unselectedItemColor: Colors.white
+            .withValues(alpha: 0.7), // Semi-transparent unselected labels
         selectedLabelStyle: const TextStyle(color: Colors.white),
-        unselectedLabelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
+        unselectedLabelStyle:
+            TextStyle(color: Colors.white.withValues(alpha: 0.7)),
         currentIndex: _selectedIndex,
         onTap: (index) {
           _pageController.animateToPage(
@@ -155,7 +156,7 @@ class _FirstPageState extends State<FirstPage> {
                     decoration: InputDecoration(
                       hintText: 'Search a city',
                       hintStyle: TextStyle(
-                        color: const Color(0xFF362A84).withOpacity(0.7),
+                        color: const Color(0xFF362A84).withValues(alpha: 0.7),
                         fontSize: 26,
                         fontWeight: FontWeight.w700,
                         letterSpacing: 0.47,
