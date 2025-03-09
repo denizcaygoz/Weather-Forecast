@@ -39,15 +39,12 @@ class SidePageState extends State<SidePage> {
         return Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              width: double.infinity,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
               decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFF2B2B54),
-                    Color(0xFF6B2B8C),
-                  ],
+                image: DecorationImage(
+                  image: AssetImage("lib/assets/images/background.png"),
+                  fit: BoxFit.cover,
                 ),
               ),
               child: Column(
@@ -75,7 +72,6 @@ class SidePageState extends State<SidePage> {
               ),
             ),
           ),
-          bottomNavigationBar: bottomNavigationBar(),
         );
       },
     );
@@ -519,45 +515,6 @@ class SidePageState extends State<SidePage> {
           )
         ],
       ),
-    );
-  }
-
-  BottomNavigationBar bottomNavigationBar() {
-    return BottomNavigationBar(
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-          if (index == 0) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const FirstPage()),
-            );
-          } else if (index == 1) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const MainPage()),
-            );
-          }
-        });
-      },
-      currentIndex: _selectedIndex,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.cloud),
-          label: 'Weather',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.menu),
-          label: 'More',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-      ],
     );
   }
 }
