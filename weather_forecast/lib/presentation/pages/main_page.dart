@@ -59,13 +59,12 @@ class _MainPageState extends State<MainPage> {
                                   top: 19, left: 55, bottom: 12),
                               child: Text(
                                 "Today",
-                                style: const TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.47,
-                                  fontFamily: 'OpenSans',
-                                ),
+                                style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.47,
+                                    fontFamily: 'OpenSans'),
                               ),
                             ),
                             Spacer(),
@@ -74,13 +73,12 @@ class _MainPageState extends State<MainPage> {
                                   top: 19, right: 40, bottom: 12),
                               child: Text(
                                 DateFormat('MMMM d').format(DateTime.now()),
-                                style: const TextStyle(
-                                  color: Color(0xFFFFFFFF),
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w600,
-                                  letterSpacing: 0.47,
-                                  fontFamily: 'OpenSans',
-                                ),
+                                style: TextStyle(
+                                    color: Color(0xFFFFFFFF),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    letterSpacing: 0.47,
+                                    fontFamily: 'OpenSans'),
                               ),
                             ),
                           ],
@@ -106,13 +104,12 @@ class _MainPageState extends State<MainPage> {
                                 children: [
                                   Text(
                                     "${hourly.temp.round()}°",
-                                    style: const TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0.47,
-                                      fontFamily: 'Poppins',
-                                    ),
+                                    style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.47,
+                                        fontFamily: 'Poppins'),
                                   ),
                                   Image.network(
                                     hourly.weatherIcon,
@@ -128,13 +125,12 @@ class _MainPageState extends State<MainPage> {
                                   ),
                                   Text(
                                     DateFormat('HH:mm').format(hourly.time),
-                                    style: const TextStyle(
-                                      color: Color(0xFFFFFFFF),
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w500,
-                                      letterSpacing: 0.47,
-                                      fontFamily: 'Poppins',
-                                    ),
+                                    style: TextStyle(
+                                        color: Color(0xFFFFFFFF),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w500,
+                                        letterSpacing: 0.47,
+                                        fontFamily: 'Poppins'),
                                   ),
                                 ],
                               );
@@ -148,7 +144,6 @@ class _MainPageState extends State<MainPage> {
               ],
             ),
           ),
-          bottomNavigationBar: bottomNavigationBar(),
         );
       },
     );
@@ -191,7 +186,7 @@ class _MainPageState extends State<MainPage> {
               fontFamily: 'Poppins')), //currentTemp from api
       Text(
         weather.description,
-        style: const TextStyle(
+        style: TextStyle(
           color: Color(0xFFFFFFFF),
           fontSize: 24,
           fontWeight: FontWeight.w500,
@@ -204,7 +199,7 @@ class _MainPageState extends State<MainPage> {
         children: [
           Text(
             "Max: ${weather.tempMax.round()}°",
-            style: const TextStyle(
+            style: TextStyle(
               color: Color(0xFFFFFFFF),
               fontSize: 24,
               fontWeight: FontWeight.w400,
@@ -214,7 +209,7 @@ class _MainPageState extends State<MainPage> {
           ),
           const SizedBox(width: 20),
           Text("Min: ${weather.tempMin.round()}°",
-              style: const TextStyle(
+              style: TextStyle(
                   color: Color(0xFFFFFFFF),
                   fontSize: 24,
                   fontWeight: FontWeight.w400,
@@ -223,44 +218,5 @@ class _MainPageState extends State<MainPage> {
         ],
       )
     ]);
-  }
-
-  BottomNavigationBar bottomNavigationBar() {
-    return BottomNavigationBar(
-      onTap: (index) {
-        setState(() {
-          _selectedIndex = index;
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const FirstPage()),
-            );
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const SidePage()),
-            );
-          }
-        });
-      },
-      currentIndex: _selectedIndex,
-      items: const <BottomNavigationBarItem>[
-        BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'Search',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.cloud),
-          label: 'Weather',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.menu),
-          label: 'More',
-          backgroundColor: Color(0xFFFFFFFF),
-        ),
-      ],
-    );
   }
 }
